@@ -9,22 +9,33 @@
   <body>
     <div id="content"></div>
     <script type="text/jsx">
-        var HelloWorld = React.createClass({
-            render: function() {
-              return (
-                <h1>
-                {this.props.date.toTimeString()}
-                </h1>
-              );
-            }
-        });
+      function currentTime() {
+        var date = new Date(Date.now());
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var returnedHours = hours;
+        if (hours === 0) { returnedHours += 12; }
+        else if (hours > 12) { returnedHours -= 12; }
+        var returnedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+        return returnedHours + ':' + returnedMinutes;
+      };
+      var HelloWorld = React.createClass({
+        render: function() {
+          return (
+            <h1>
+              {this.props.date.toTimeString()}
+            </h1>
+          );
+        }
+      });
 
-        setInterval(function() {
-            React.render(
-                <HelloWorld date={new Date()} />,
-                document.getElementById('content')
-            );
-        }, 500);
+      setInterval(function() {
+        React.render(
+          <HelloWorld date={currentTime()} />,
+            document.getElementById('content')
+        );
+      }, 500);
     </script>
   </body>
 </html>
