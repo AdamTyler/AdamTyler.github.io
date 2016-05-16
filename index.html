@@ -13,12 +13,13 @@
         var date = new Date(Date.now());
         var hours = date.getHours();
         var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
         var returnedHours = hours;
         if (hours === 0) { returnedHours += 12; }
         else if (hours > 12) { returnedHours -= 12; }
         var returnedMinutes = minutes < 10 ? '0' + minutes : minutes;
     
-        return returnedHours + ':' + returnedMinutes;
+        return returnedHours + ':' + returnedMinutes + ':' + seconds;
       };
       var HelloWorld = React.createClass({
         render: function() {
