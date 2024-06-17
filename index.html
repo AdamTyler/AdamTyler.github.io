@@ -36,11 +36,12 @@
       .exp {
         display: flex;
         justify-content: center;
-        column-gap: 20px;
       }
       .hover-container {
-        position: relative;
         display: inline-block;
+        padding: 15px;
+        padding-top: 30px;
+        position: relative;
       }
       .hover-text {
         visibility: hidden;
@@ -64,9 +65,9 @@
         filter: none;
       }
       .thumb {
+        border-radius: 20%;
         filter: grayscale();
         height: 80px;
-        padding: 40px;
         width: 80px;
       }
       .info {
@@ -132,7 +133,7 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
-        margin-top: 40px;
+        margin: 40px 0;
       }
       .social-icons > a {
         color: #fff;
@@ -423,20 +424,31 @@
           I <i class="fa fa-heart heartbeat animate-infinite-heartbeat"></i> making modern websites and apps with
           cutting edge technologies and great user experiences
         </p>
+        <h3>Professional</h3>
         <div class="exp">
           <a href="https://www.prizepicks.com/" class="hover-container">
             <span class="hover-text">PrizePicks</span>
-            <img class="thumb" src="./assets/pp.svg" alt="prizepicks logo" />
+            <img class="thumb" src="./assets/pp.webp" alt="prizepicks logo" />
           </a>
           <a href="https://www.getibble.com/" class="hover-container"
-            ><img class="thumb" src="./assets/ibble.png" alt="ibble logo" /> <span class="hover-text">ibble</span></a
+            ><img class="thumb" src="./assets/ibble.webp" alt="ibble logo" /> <span class="hover-text">ibble</span></a
           >
           <a href="https://roosterteeth.com" class="hover-container"
             ><img class="thumb" src="./assets/rt.webp" alt="roosterteeth logo" />
             <span class="hover-text">RoosterTeeth</span></a
           >
         </div>
-        <p>Creator of <a href="https://drawlur.com">Drawlur</a> and <a href="react-dice-complete">React Dice</a></p>
+        <h3>Personal</h3>
+        <div class="exp">
+          <a href="https://drawlur.com" class="hover-container">
+            <span class="hover-text">Drawlur</span>
+            <img class="thumb" src="./assets/drawlur.png" alt="drawlur logo" />
+          </a>
+          <a href="https://www.getibble.com/" class="hover-container"
+            ><img class="thumb" src="./assets/rd.webp" alt="react dice logo" />
+            <span class="hover-text">React Dice</span></a
+          >
+        </div>
       </div>
       <div class="social-icons">
         <a class="gh" href="https://github.com/AdamTyler"><i class="fa fa-2x fa-github"></i></a>
