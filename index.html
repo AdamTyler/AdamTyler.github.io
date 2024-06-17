@@ -31,7 +31,43 @@
         text-transform: uppercase;
       }
       .about a {
-        color: #d9b310;
+        color: #dab510;
+      }
+      .exp {
+        display: flex;
+        justify-content: center;
+        column-gap: 20px;
+      }
+      .hover-container {
+        position: relative;
+        display: inline-block;
+      }
+      .hover-text {
+        visibility: hidden;
+        width: 100%;
+        height: 100%;
+        color: #dab510;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px 0;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 0;
+        transition: visibility 0.2s;
+      }
+      .hover-container:hover .hover-text {
+        visibility: visible;
+      }
+      .hover-container:hover .thumb {
+        filter: none;
+      }
+      .thumb {
+        filter: grayscale();
+        width: 80px;
+        height: 80px;
+        padding: 40px;
       }
       .info {
         opacity: 0;
@@ -387,8 +423,19 @@
           I <i class="fa fa-heart heartbeat animate-infinite-heartbeat"></i> making modern websites and apps with
           cutting edge technologies and great user experiences
         </p>
-        <p>Principal Engineer for <a href="https://www.getibble.com/">ibble</a></p>
-        <p>previously <a href="https://roosterteeth.com">Rooster Teeth Productions</a></p>
+        <div class="exp">
+          <a href="https://www.prizepicks.com/" class="hover-container">
+            <span class="hover-text">PrizePicks</span>
+            <img class="thumb" src="./assets/pp.svg" alt="prizepicks logo" />
+          </a>
+          <a href="https://www.getibble.com/" class="hover-container"
+            ><img class="thumb" src="./assets/ibble.png" alt="ibble logo" /> <span class="hover-text">ibble</span></a
+          >
+          <a href="https://roosterteeth.com" class="hover-container"
+            ><img class="thumb" src="./assets/rt.png" alt="roosterteeth logo" />
+            <span class="hover-text">RoosterTeeth</span></a
+          >
+        </div>
         <p>Creator of <a href="https://drawlur.com">Drawlur</a> and <a href="react-dice-complete">React Dice</a></p>
       </div>
       <div class="social-icons">
