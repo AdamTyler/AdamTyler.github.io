@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adam Tyler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    rgba(255,255,255,0.07);
+      --gold:      #e8a020;
+      --blue:      #3b9edd;
+      --white:     #f0f4f8;
+      --muted:     #8b98a8;
+      --dim:       #4a5568;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── noise grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── subtle radial glow ── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      height: 60vh;
+      background: radial-gradient(ellipse, rgba(59,158,221,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── layout ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 60px 28px 80px;
+    }
+
+    /* ── hero ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    /* ── portrait ── */
+    .portrait-wrap {
+      position: relative;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeDown 0.7s ease forwards 0.05s;
+      display: inline-block;
+    }
+
+    .portrait {
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 2px solid rgba(59,158,221,0.4);
+      box-shadow:
+        0 0 0 4px rgba(232,160,32,0.12),
+        0 0 40px rgba(59,158,221,0.18),
+        0 8px 32px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    .portrait-badge {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 54px;
+      height: 40px;
+      background: var(--bg);
+      border: 1.5px solid rgba(59,158,221,0.45);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 14px rgba(59,158,221,0.2),
+        0 0 0 3px rgba(232,160,32,0.08),
+        0 4px 12px rgba(0,0,0,0.5);
+      padding: 5px 6px;
+    }
+
+    /* ── monogram (now only lives inside badge) ── */
+    .monogram {
+      display: none;
+    }
+
+    .name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(52px, 14vw, 80px);
+      letter-spacing: 0.04em;
+      line-height: 0.92;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeDown 0.7s ease forwards 0.25s;
+    }
+
+    .tagline-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeDown 0.7s ease forwards 0.4s;
+    }
+
+    .role-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(232,160,32,0.1);
+      border: 1px solid rgba(232,160,32,0.25);
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    .tagline {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .bio {
+      margin-top: 18px;
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 380px;
+      opacity: 0;
+      animation: fadeDown 0.7s ease forwards 0.55s;
+    }
+
+    /* ── section ── */
+    .section {
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .section:nth-child(2) { animation-delay: 0.6s; }
+    .section:nth-child(3) { animation-delay: 0.75s; }
+    .section:nth-child(4) { animation-delay: 0.9s; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── cards ── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--blue), var(--gold));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      transform: translateX(3px);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #1e2530;
+    }
+
+    .card-icon-placeholder {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--surface), #1e2530);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-arrow {
+      color: var(--dim);
+      font-size: 14px;
+      transition: color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .card:hover .card-arrow {
+      color: var(--blue);
+      transform: translateX(2px);
+    }
+
+    /* ── social ── */
+    .socials {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .social-btn:hover {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .social-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 64px;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 1.1s;
+    }
+
+    .footer span {
+      color: var(--gold);
+    }
+
+    /* ── animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── mobile tweaks ── */
+    @media (max-width: 400px) {
+      .wrapper { padding: 48px 20px 64px; }
+      .social-btn { padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HERO -->
+  <header class="hero">
+
+    <!-- Portrait -->
+    <div class="portrait-wrap">
+      <img class="portrait" src="1000013718.png" alt="Adam Tyler" />
+      <!-- AT badge -->
+      <div class="portrait-badge">
+        <svg viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg" width="42" height="30">
+          <path d="M8 98 L42 12 L76 98" stroke="#3b9edd" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M20 68 L64 68" stroke="#3b9edd" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M14 98 L42 22 L70 98" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+          <path d="M24 68 L60 68" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.75"/>
+          <path d="M88 12 L152 12" stroke="#3b9edd" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M120 12 L120 98" stroke="#3b9edd" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <path d="M88 19 L152 19" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.75"/>
+          <path d="M127 19 L127 98" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.75"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- AT Monogram (SVG recreation of the dual-outline style) -->
+    <svg class="monogram" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- A glyph -->
+      <path d="M8 98 L42 12 L76 98" stroke="#3b9edd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M20 68 L64 68" stroke="#3b9edd" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <!-- A inner outline offset -->
+      <path d="M14 98 L42 22 L70 98" stroke="#e8a020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+      <path d="M24 68 L60 68" stroke="#e8a020" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+      <!-- T glyph -->
+      <path d="M88 12 L152 12" stroke="#3b9edd" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M120 12 L120 98" stroke="#3b9edd" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <!-- T inner outline offset -->
+      <path d="M88 18 L152 18" stroke="#e8a020" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <path d="M126 18 L126 98" stroke="#e8a020" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+    </svg>
+
+    <h1 class="name">Adam<br/>Tyler</h1>
+
+    <div class="tagline-row">
+      <span class="role-badge">Digital Craftsman</span>
+      <span class="tagline">Measure twice, ship once.</span>
+    </div>
+
+    <p class="bio">
+      Engineer, girl dad, woodworker, and gamer. I love building things — whether that's a polished web app, a piece of furniture for my daughter's room, or a game I can't put down. If it can be made with code or with my hands, I'm interested.
+    </p>
+  </header>
+
+  <!-- PROFESSIONAL -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-label">Professional</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards">
+
+      <a class="card" href="https://www.prizepicks.com/" target="_blank" rel="noopener">
+        <img class="card-icon" src="https://www.adam-tyler.com/assets/pp.webp" alt="PrizePicks" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="card-icon-placeholder" style="display:none">PP</div>
+        <div class="card-info">
+          <div class="card-name">PrizePicks</div>
+          <div class="card-desc">Daily fantasy sports platform · Product Engineer</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://www.getibble.com/" target="_blank" rel="noopener">
+        <img class="card-icon" src="https://www.adam-tyler.com/assets/ibble.webp" alt="ibble" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="card-icon-placeholder" style="display:none">IB</div>
+        <div class="card-info">
+          <div class="card-name">ibble</div>
+          <div class="card-desc">Social messaging app · Frontend Engineer</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://roosterteeth.com/" target="_blank" rel="noopener">
+        <img class="card-icon" src="https://www.adam-tyler.com/assets/rt.webp" alt="Rooster Teeth" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="card-icon-placeholder" style="display:none">RT</div>
+        <div class="card-info">
+          <div class="card-name">Rooster Teeth</div>
+          <div class="card-desc">Entertainment network · Web Engineer</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- PERSONAL -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-label">Personal Projects</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards">
+
+      <a class="card" href="https://drawlur.com/" target="_blank" rel="noopener">
+        <img class="card-icon" src="https://www.adam-tyler.com/assets/drawlur.png" alt="Drawlur" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="card-icon-placeholder" style="display:none">DW</div>
+        <div class="card-info">
+          <div class="card-name">Drawlur</div>
+          <div class="card-desc">Online drawing & game app</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://www.npmjs.com/package/react-dice-complete" target="_blank" rel="noopener">
+        <img class="card-icon" src="https://www.adam-tyler.com/assets/rd.webp" alt="React Dice" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="card-icon-placeholder" style="display:none">RD</div>
+        <div class="card-info">
+          <div class="card-name">React Dice</div>
+          <div class="card-desc">Open-source dice roller component for React</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-label">Connect</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="socials">
+
+      <a class="social-btn" href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        GitHub
+      </a>
+
+      <a class="social-btn" href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter / X">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.26 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Twitter
+      </a>
+
+      <a class="social-btn" href="https://linkedin.com/in/adamtyler96" target="_blank" rel="noopener" title="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    Built with <span>♥</span> · adam-tyler.com
+  </footer>
+
+</div>
+</body>
+</html>
