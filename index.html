@@ -1,205 +1,1032 @@
-<!DOCTYPE html>
-
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Adam Tyler</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
     <link rel="icon" href="favicon.png" />
-    <script src="https://use.fontawesome.com/bc970211c3.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      :root {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --border: rgba(255, 255, 255, 0.07);
+        --gold: #e8a020;
+        --blue: #3b9edd;
+        --white: #f0f4f8;
+        --muted: #8b98a8;
+        --dim: #4a5568;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
-        background-color: #1d2731;
-        color: #fff;
-        display: flex;
-        font-family: 'Roboto', sans-serif;
-        font-size: 2vh;
-        flex-direction: column;
-        margin: 0 80px;
-        text-align: center;
+        background: var(--bg);
+        color: var(--white);
+        font-family: "Barlow", sans-serif;
+        font-weight: 300;
+        min-height: 100vh;
+        overflow-x: hidden;
       }
-      section > div {
-        margin-top: 60px;
+
+      /* ── noise grain overlay ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.4;
       }
-      .logo {
-        display: flex;
-        justify-content: center;
-        margin-top: 150px;
-      }
-      .name {
-        margin: 0 auto;
-        font-size: 4vh;
-        text-transform: uppercase;
-      }
-      .about a {
-        color: #dab510;
-      }
-      .exp {
-        display: flex;
-        justify-content: center;
-      }
-      .hover-container {
-        display: inline-block;
-        padding: 15px;
-        padding-bottom: 30px;
-        position: relative;
-      }
-      .hover-text {
-        visibility: hidden;
-        width: 100%;
-        height: 100%;
-        color: #dab510;
-        text-align: center;
-        padding: 15px 0;
-        position: absolute;
-        bottom: 0;
+
+      /* ── subtle radial glow ── */
+      body::after {
+        content: "";
+        position: fixed;
+        top: -20vh;
         left: 50%;
         transform: translateX(-50%);
+        width: 80vw;
+        height: 60vh;
+        background: radial-gradient(
+          ellipse,
+          rgba(59, 158, 221, 0.06) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
         z-index: 0;
-        transition: visibility 0.2s;
-      }
-      .hover-container:hover .hover-text {
-        visibility: visible;
-      }
-      .hover-container:hover .thumb {
-        filter: none;
-      }
-      .thumb {
-        border-radius: 20%;
-        filter: grayscale();
-        height: 80px;
-        width: 80px;
-      }
-      .info {
-        opacity: 0;
-        text-align: center;
-
-        -webkit-animation: fadein 2s 3s forwards; /* Safari, Chrome and Opera > 12.1 */
-        -moz-animation: fadein 2s 3s forwards; /* Firefox < 16 */
-        -ms-animation: fadein 2s 3s forwards; /* Internet Explorer */
-        -o-animation: fadein 2s 3s forwards; /* Opera < 12.1 */
-        animation: fadein 2s 3s forwards;
       }
 
-      @keyframes fadein {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+      /* ── layout ── */
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 540px;
+        margin: 0 auto;
+        padding: 60px 28px 80px;
       }
 
-      /* Firefox < 16 */
-      @-moz-keyframes fadein {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      /* Safari, Chrome and Opera > 12.1 */
-      @-webkit-keyframes fadein {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      /* Internet Explorer */
-      @-ms-keyframes fadein {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      /* Opera < 12.1 */
-      @-o-keyframes fadein {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      .social-icons {
+      /* ── hero ── */
+      .hero {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin: 40px 0;
-      }
-      .social-icons > a {
-        color: #fff;
-        margin: 0 10px;
-      }
-      .social-icons > a:hover {
-        color: #328cc1;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 72px;
       }
 
-      @-webkit-keyframes heartbeat {
-        0% {
-          -webkit-transform: scale(1);
-        }
-        50% {
-          -webkit-transform: scale(1.4);
-        }
-        100% {
-          -webkit-transform: scale(1);
+      /* ── portrait ── */
+      .portrait-wrap {
+        position: relative;
+        margin-bottom: 105px;
+        opacity: 0;
+        animation: fadeDown 0.7s ease forwards 0.05s;
+        display: inline-block;
+        overflow: visible;
+      }
+
+      .portrait {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ── animated ring overlay ── */
+      .portrait-ring {
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        width: 216px;
+        height: 216px;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .portrait-badge {
+        position: absolute;
+        bottom: -72px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 168px;
+        background: var(--bg);
+        border: 1.5px solid transparent;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        animation: badgeBorderIn 2s ease forwards 0.1s;
+        z-index: 2;
+      }
+
+      .portrait-badge svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 900;
+        font-size: clamp(52px, 14vw, 80px);
+        letter-spacing: 0.04em;
+        line-height: 0.92;
+        text-transform: uppercase;
+        color: var(--white);
+        opacity: 0;
+        animation: fadeDown 0.7s ease forwards 0.25s;
+      }
+
+      .tagline-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        opacity: 0;
+        animation: fadeDown 0.7s ease forwards 0.4s;
+      }
+
+      .role-badge {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        background: rgba(232, 160, 32, 0.1);
+        border: 1px solid rgba(232, 160, 32, 0.25);
+        padding: 4px 10px;
+        border-radius: 3px;
+      }
+
+      .tagline {
+        font-size: 13px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+      }
+
+      .bio {
+        margin-top: 18px;
+        font-size: 14.5px;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 380px;
+        opacity: 0;
+        animation: fadeDown 0.7s ease forwards 0.55s;
+      }
+
+      /* ── section ── */
+      .section {
+        margin-bottom: 52px;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+      }
+
+      .section:nth-child(2) {
+        animation-delay: 0.6s;
+      }
+      .section:nth-child(3) {
+        animation-delay: 0.75s;
+      }
+      .section:nth-child(4) {
+        animation-delay: 0.9s;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .section-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+
+      .section-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* ── cards ── */
+      .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, var(--blue), var(--gold));
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .card:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.04);
+        transform: translateX(3px);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #1e2530;
+      }
+
+      .card-icon-placeholder {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--surface), #1e2530);
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+      }
+
+      .card-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .card-name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--white);
+        margin-bottom: 3px;
+      }
+
+      .card-desc {
+        font-size: 12.5px;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-arrow {
+        color: var(--dim);
+        font-size: 14px;
+        transition:
+          color 0.2s,
+          transform 0.2s;
+        flex-shrink: 0;
+      }
+
+      .card:hover .card-arrow {
+        color: var(--blue);
+        transform: translateX(2px);
+      }
+
+      /* ── social ── */
+      .socials {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .social-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+      }
+
+      .social-btn:hover {
+        color: var(--white);
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .social-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+
+      /* ── footer ── */
+      .footer {
+        margin-top: 64px;
+        text-align: center;
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--dim);
+        letter-spacing: 0.1em;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 1.1s;
+      }
+
+      .footer span {
+        color: var(--gold);
+      }
+
+      /* ── ring / badge border draw-in ── */
+      @keyframes ringDraw {
+        to {
+          stroke-dashoffset: 0;
         }
       }
-      @-moz-keyframes heartbeat {
-        0% {
-          -moz-transform: scale(1);
+
+      @keyframes badgeBorderIn {
+        from {
+          border-color: transparent;
+          box-shadow: none;
         }
-        50% {
-          -moz-transform: scale(1.4);
-        }
-        100% {
-          -moz-transform: scale(1);
-        }
-      }
-      @-o-keyframes heartbeat {
-        0% {
-          -o-transform: scale(1);
-        }
-        50% {
-          -o-transform: scale(1.4);
-        }
-        100% {
-          -o-transform: scale(1);
+        to {
+          border-color: rgba(59, 158, 221, 0.45);
+          box-shadow:
+            0 0 14px rgba(59, 158, 221, 0.2),
+            0 0 0 3px rgba(232, 160, 32, 0.08),
+            0 4px 12px rgba(0, 0, 0, 0.5);
         }
       }
-      @keyframes heartbeat {
-        0% {
-          transform: scale(1);
+
+      /* ── animations ── */
+      @keyframes fadeDown {
+        from {
+          opacity: 0;
+          transform: translateY(-16px);
         }
-        50% {
-          transform: scale(1.4);
-        }
-        100% {
-          transform: scale(1);
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
-      .heartbeat {
-        color: #328cc1;
-        -webkit-animation-name: heartbeat;
-        -moz-animation-name: heartbeat;
-        -o-animation-name: heartbeat;
-        animation-name: heartbeat;
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      .animate-infinite-heartbeat {
-        color: #328cc1;
-        -webkit-animation: heartbeat 2s 4; /* Chrome, Safari, Opera */
-        animation: heartbeat 2s 4;
+
+      /* ── mobile tweaks ── */
+      @media (max-width: 400px) {
+        .wrapper {
+          padding: 48px 20px 64px;
+        }
+        .social-btn {
+          padding: 10px 14px;
+        }
       }
     </style>
   </head>
+  <body>
+    <div class="wrapper">
+      <!-- HERO -->
+      <header class="hero">
+        <!-- Portrait -->
+        <div class="portrait-wrap">
+          <!-- Animated ring overlay -->
+          <svg
+            class="portrait-ring"
+            viewBox="0 0 216 216"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="108"
+              cy="108"
+              r="101"
+              stroke="#3b9edd"
+              stroke-width="2.5"
+              fill="none"
+              stroke-dasharray="635"
+              stroke-dashoffset="635"
+              style="animation: ringDraw 2000ms linear 0ms forwards"
+            />
+            <circle
+              cx="108"
+              cy="108"
+              r="106"
+              stroke="#e8a020"
+              stroke-width="1.5"
+              fill="none"
+              opacity="0.3"
+              stroke-dasharray="666"
+              stroke-dashoffset="666"
+              style="animation: ringDraw 2000ms linear 200ms forwards"
+            />
+          </svg>
+          <img class="portrait" src="./assets/portrait.png" alt="Adam Tyler" />
+          <!-- AT logo badge -->
+          <div class="portrait-badge">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 452 223"
+              version="1.1"
+            >
+              <g
+                id="Page-1"
+                stroke="none"
+                stroke-width="1"
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <g
+                  id="bigT"
+                  transform="translate(267.000000, 2.000000)"
+                  stroke="#328CC1"
+                  stroke-width="4"
+                  stroke-linecap="square"
+                >
+                  <path d="M2,216 L70.09375,216" id="Path" class="XwKMjlQL_0" />
+                  <path
+                    d="M2,1.82421875 L2,215.59168"
+                    id="Path-4"
+                    class="XwKMjlQL_1"
+                  />
+                  <path
+                    d="M71,216 L71,64.6654571"
+                    id="Path-5"
+                    class="XwKMjlQL_2"
+                  />
+                  <path
+                    d="M181,2.66601562 L181,63.67"
+                    id="Path-7"
+                    class="XwKMjlQL_3"
+                  />
+                  <path
+                    d="M1.79,1.82 L180.566725,2.77148438"
+                    id="Path-3"
+                    class="XwKMjlQL_4"
+                  />
+                  <path
+                    d="M71.09,64 L181.17,64"
+                    id="Path-9"
+                    class="XwKMjlQL_5"
+                  />
+                </g>
+                <g
+                  id="bigA"
+                  transform="translate(3.000000, 3.000000)"
+                  stroke="#328CC1"
+                  stroke-width="4"
+                >
+                  <path
+                    d="M0.1796875,216 L68.2734375,216"
+                    id="Path"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_6"
+                  />
+                  <path
+                    d="M167,216 L239,216"
+                    id="Path"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_7"
+                  />
+                  <path
+                    d="M137.199219,2 L239,2"
+                    id="Path-2"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_8"
+                  />
+                  <path
+                    d="M239,1.82421875 L239,215.59168"
+                    id="Path-4"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_9"
+                  />
+                  <path
+                    d="M167,215.113281 L167,65.9966469"
+                    id="Path-5"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_10"
+                  />
+                  <path
+                    d="M136.02,3 L0,215"
+                    id="Path-6"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_11"
+                  />
+                  <path
+                    d="M68.27,217 L166.816406,65.67"
+                    id="Path-8"
+                    class="XwKMjlQL_12"
+                  />
+                </g>
+                <g
+                  id="lilA"
+                  transform="translate(28.000000, 17.000000)"
+                  stroke="#D9B310"
+                  stroke-width="4"
+                >
+                  <path
+                    d="M116,2 L1,182"
+                    id="Path-6"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_13"
+                  />
+                  <path
+                    d="M159,186 L200,186"
+                    id="Path"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_14"
+                  />
+                  <path
+                    d="M0.5,184 L39.5,184"
+                    id="Path"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_15"
+                  />
+                  <path
+                    d="M155,186.113281 L155,28"
+                    id="Path-5"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_16"
+                  />
+                  <path
+                    d="M118,1 L200,1"
+                    id="Path-2"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_17"
+                  />
+                  <path
+                    d="M144.5,27.67 L154,27.67"
+                    id="Path-2"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_18"
+                  />
+                  <path
+                    d="M39.27,185 L144.000003,27"
+                    id="Path-8"
+                    class="XwKMjlQL_19"
+                  />
+                  <path
+                    d="M200,2 L200,186"
+                    id="Path-4"
+                    stroke-linecap="square"
+                    class="XwKMjlQL_20"
+                  />
+                </g>
+                <g
+                  id="lilT"
+                  transform="translate(281.000000, 18.000000)"
+                  stroke="#D9B310"
+                  stroke-width="4"
+                  stroke-linecap="square"
+                >
+                  <path d="M1,185 L44,185" id="Path" class="XwKMjlQL_21" />
+                  <path d="M1,1 L1,183" id="Path-4" class="XwKMjlQL_22" />
+                  <path d="M44,183 L44,33" id="Path-5" class="XwKMjlQL_23" />
+                  <path d="M151,1 L151,29" id="Path-7" class="XwKMjlQL_24" />
+                  <path d="M1,1 L150,1" id="Path-3" class="XwKMjlQL_25" />
+                  <path
+                    d="M44.09,33 L151.000004,33"
+                    id="Path-9"
+                    class="XwKMjlQL_26"
+                  />
+                </g>
+              </g>
+              <style>
+                .XwKMjlQL_0 {
+                  stroke-dasharray: 69 71;
+                  stroke-dashoffset: 70;
+                  animation: XwKMjlQL_draw 2000ms linear 0ms forwards;
+                }
+                .XwKMjlQL_1 {
+                  stroke-dasharray: 214 216;
+                  stroke-dashoffset: 215;
+                  animation: XwKMjlQL_draw 2000ms linear 38ms forwards;
+                }
+                .XwKMjlQL_2 {
+                  stroke-dasharray: 152 154;
+                  stroke-dashoffset: 153;
+                  animation: XwKMjlQL_draw 2000ms linear 76ms forwards;
+                }
+                .XwKMjlQL_3 {
+                  stroke-dasharray: 62 64;
+                  stroke-dashoffset: 63;
+                  animation: XwKMjlQL_draw 2000ms linear 115ms forwards;
+                }
+                .XwKMjlQL_4 {
+                  stroke-dasharray: 179 181;
+                  stroke-dashoffset: 180;
+                  animation: XwKMjlQL_draw 2000ms linear 153ms forwards;
+                }
+                .XwKMjlQL_5 {
+                  stroke-dasharray: 111 113;
+                  stroke-dashoffset: 112;
+                  animation: XwKMjlQL_draw 2000ms linear 192ms forwards;
+                }
+                .XwKMjlQL_6 {
+                  stroke-dasharray: 69 71;
+                  stroke-dashoffset: 70;
+                  animation: XwKMjlQL_draw 2000ms linear 230ms forwards;
+                }
+                .XwKMjlQL_7 {
+                  stroke-dasharray: 72 74;
+                  stroke-dashoffset: 73;
+                  animation: XwKMjlQL_draw 2000ms linear 269ms forwards;
+                }
+                .XwKMjlQL_8 {
+                  stroke-dasharray: 102 104;
+                  stroke-dashoffset: 103;
+                  animation: XwKMjlQL_draw 2000ms linear 307ms forwards;
+                }
+                .XwKMjlQL_9 {
+                  stroke-dasharray: 214 216;
+                  stroke-dashoffset: 215;
+                  animation: XwKMjlQL_draw 2000ms linear 346ms forwards;
+                }
+                .XwKMjlQL_10 {
+                  stroke-dasharray: 150 152;
+                  stroke-dashoffset: 151;
+                  animation: XwKMjlQL_draw 2000ms linear 384ms forwards;
+                }
+                .XwKMjlQL_11 {
+                  stroke-dasharray: 252 254;
+                  stroke-dashoffset: 253;
+                  animation: XwKMjlQL_draw 2000ms linear 423ms forwards;
+                }
+                .XwKMjlQL_12 {
+                  stroke-dasharray: 181 183;
+                  stroke-dashoffset: 182;
+                  animation: XwKMjlQL_draw 2000ms linear 461ms forwards;
+                }
+                .XwKMjlQL_13 {
+                  stroke-dasharray: 214 216;
+                  stroke-dashoffset: 215;
+                  animation: XwKMjlQL_draw 2000ms linear 500ms forwards;
+                }
+                .XwKMjlQL_14 {
+                  stroke-dasharray: 41 43;
+                  stroke-dashoffset: 42;
+                  animation: XwKMjlQL_draw 2000ms linear 538ms forwards;
+                }
+                .XwKMjlQL_15 {
+                  stroke-dasharray: 39 41;
+                  stroke-dashoffset: 40;
+                  animation: XwKMjlQL_draw 2000ms linear 576ms forwards;
+                }
+                .XwKMjlQL_16 {
+                  stroke-dasharray: 159 161;
+                  stroke-dashoffset: 160;
+                  animation: XwKMjlQL_draw 2000ms linear 615ms forwards;
+                }
+                .XwKMjlQL_17 {
+                  stroke-dasharray: 82 84;
+                  stroke-dashoffset: 83;
+                  animation: XwKMjlQL_draw 2000ms linear 653ms forwards;
+                }
+                .XwKMjlQL_18 {
+                  stroke-dasharray: 10 12;
+                  stroke-dashoffset: 11;
+                  animation: XwKMjlQL_draw 2000ms linear 692ms forwards;
+                }
+                .XwKMjlQL_19 {
+                  stroke-dasharray: 190 192;
+                  stroke-dashoffset: 191;
+                  animation: XwKMjlQL_draw 2000ms linear 730ms forwards;
+                }
+                .XwKMjlQL_20 {
+                  stroke-dasharray: 184 186;
+                  stroke-dashoffset: 185;
+                  animation: XwKMjlQL_draw 2000ms linear 769ms forwards;
+                }
+                .XwKMjlQL_21 {
+                  stroke-dasharray: 43 45;
+                  stroke-dashoffset: 44;
+                  animation: XwKMjlQL_draw 2000ms linear 807ms forwards;
+                }
+                .XwKMjlQL_22 {
+                  stroke-dasharray: 182 184;
+                  stroke-dashoffset: 183;
+                  animation: XwKMjlQL_draw 2000ms linear 846ms forwards;
+                }
+                .XwKMjlQL_23 {
+                  stroke-dasharray: 150 152;
+                  stroke-dashoffset: 151;
+                  animation: XwKMjlQL_draw 2000ms linear 884ms forwards;
+                }
+                .XwKMjlQL_24 {
+                  stroke-dasharray: 28 30;
+                  stroke-dashoffset: 29;
+                  animation: XwKMjlQL_draw 2000ms linear 923ms forwards;
+                }
+                .XwKMjlQL_25 {
+                  stroke-dasharray: 149 151;
+                  stroke-dashoffset: 150;
+                  animation: XwKMjlQL_draw 2000ms linear 961ms forwards;
+                }
+                .XwKMjlQL_26 {
+                  stroke-dasharray: 107 109;
+                  stroke-dashoffset: 108;
+                  animation: XwKMjlQL_draw 2000ms linear 1000ms forwards;
+                }
+                @keyframes XwKMjlQL_draw {
+                  100% {
+                    stroke-dashoffset: 0;
+                  }
+                }
+              </style>
+            </svg>
+          </div>
+        </div>
+
+        <h1 class="name">Adam<br />Tyler</h1>
+
+        <div class="tagline-row">
+          <span class="role-badge">Digital Craftsman</span>
+          <span class="tagline">Measure twice, ship once.</span>
+        </div>
+
+        <p class="bio">
+          Engineer, girl dad, woodworker, and gamer. I love building things —
+          whether that's a polished web app, a piece of furniture for my
+          daughter's room, or a game I can't put down. If it can be made with
+          code or with my hands, I'm interested.
+        </p>
+      </header>
+
+      <!-- PROFESSIONAL -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Professional</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="cards">
+          <a
+            class="card"
+            href="https://www.prizepicks.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="card-icon"
+              src="./assets/pp.webp"
+              alt="PrizePicks"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+            />
+            <div class="card-icon-placeholder" style="display: none">PP</div>
+            <div class="card-info">
+              <div class="card-name">PrizePicks</div>
+              <div class="card-desc">
+                Daily fantasy sports platform · Principal Engineer
+              </div>
+            </div>
+            <span class="card-arrow">→</span>
+          </a>
+
+          <a
+            class="card"
+            href="https://www.getibble.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="card-icon"
+              src="./assets/ibble.webp"
+              alt="ibble"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+            />
+            <div class="card-icon-placeholder" style="display: none">IB</div>
+            <div class="card-info">
+              <div class="card-name">ibble</div>
+              <div class="card-desc">
+                Social Video Communities · Principal Engineer
+              </div>
+            </div>
+            <span class="card-arrow">→</span>
+          </a>
+
+          <a
+            class="card"
+            href="https://roosterteeth.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="card-icon"
+              src="./assets/rt.webp"
+              alt="Rooster Teeth"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+            />
+            <div class="card-icon-placeholder" style="display: none">RT</div>
+            <div class="card-info">
+              <div class="card-name">Rooster Teeth</div>
+              <div class="card-desc">
+                Video Streaming & Social Platform · Software Architect
+              </div>
+            </div>
+            <span class="card-arrow">→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- PERSONAL -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Personal Projects</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="cards">
+          <a
+            class="card"
+            href="https://drawlur.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="card-icon"
+              src="./assets/drawlur.png"
+              alt="Drawlur"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+            />
+            <div class="card-icon-placeholder" style="display: none">DW</div>
+            <div class="card-info">
+              <div class="card-name">Drawlur</div>
+              <div class="card-desc">Social Drawing site & apps</div>
+            </div>
+            <span class="card-arrow">→</span>
+          </a>
+
+          <a
+            class="card"
+            href="https://www.npmjs.com/package/react-dice-complete"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              class="card-icon"
+              src="./assets/rd.webp"
+              alt="React Dice"
+              onerror="
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+              "
+            />
+            <div class="card-icon-placeholder" style="display: none">RD</div>
+            <div class="card-info">
+              <div class="card-name">React Dice</div>
+              <div class="card-desc">
+                Open-source dice roller component for React
+              </div>
+            </div>
+            <span class="card-arrow">→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- SOCIAL -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Connect</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="socials">
+          <a
+            class="social-btn"
+            href="https://github.com/AdamTyler"
+            target="_blank"
+            rel="noopener"
+            title="GitHub"
+          >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+              />
+            </svg>
+            GitHub
+          </a>
+
+          <a
+            class="social-btn"
+            href="https://twitter.com/_adam_tyler"
+            target="_blank"
+            rel="noopener"
+            title="Twitter / X"
+          >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.26 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+              />
+            </svg>
+            Twitter
+          </a>
+
+          <a
+            class="social-btn"
+            href="https://linkedin.com/in/adamtyler96"
+            target="_blank"
+            rel="noopener"
+            title="LinkedIn"
+          >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+              />
+            </svg>
+            LinkedIn
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer">Built with <span>♥</span> · adam-tyler.com</footer>
+    </div>
+
+    <!--
+  ============================================================
+  PREVIOUS index.html BODY (preserved for reference)
+  ============================================================
+
   <body>
     <section class="logo">
       <svg
@@ -259,159 +1086,7 @@
             <path d="M44.09,33 L151.000004,33" id="Path-9" class="XwKMjlQL_26" />
           </g>
         </g>
-        <style>
-          .XwKMjlQL_0 {
-            stroke-dasharray: 69 71;
-            stroke-dashoffset: 70;
-            animation: XwKMjlQL_draw 2000ms linear 0ms forwards;
-          }
-          .XwKMjlQL_1 {
-            stroke-dasharray: 214 216;
-            stroke-dashoffset: 215;
-            animation: XwKMjlQL_draw 2000ms linear 38ms forwards;
-          }
-          .XwKMjlQL_2 {
-            stroke-dasharray: 152 154;
-            stroke-dashoffset: 153;
-            animation: XwKMjlQL_draw 2000ms linear 76ms forwards;
-          }
-          .XwKMjlQL_3 {
-            stroke-dasharray: 62 64;
-            stroke-dashoffset: 63;
-            animation: XwKMjlQL_draw 2000ms linear 115ms forwards;
-          }
-          .XwKMjlQL_4 {
-            stroke-dasharray: 179 181;
-            stroke-dashoffset: 180;
-            animation: XwKMjlQL_draw 2000ms linear 153ms forwards;
-          }
-          .XwKMjlQL_5 {
-            stroke-dasharray: 111 113;
-            stroke-dashoffset: 112;
-            animation: XwKMjlQL_draw 2000ms linear 192ms forwards;
-          }
-          .XwKMjlQL_6 {
-            stroke-dasharray: 69 71;
-            stroke-dashoffset: 70;
-            animation: XwKMjlQL_draw 2000ms linear 230ms forwards;
-          }
-          .XwKMjlQL_7 {
-            stroke-dasharray: 72 74;
-            stroke-dashoffset: 73;
-            animation: XwKMjlQL_draw 2000ms linear 269ms forwards;
-          }
-          .XwKMjlQL_8 {
-            stroke-dasharray: 102 104;
-            stroke-dashoffset: 103;
-            animation: XwKMjlQL_draw 2000ms linear 307ms forwards;
-          }
-          .XwKMjlQL_9 {
-            stroke-dasharray: 214 216;
-            stroke-dashoffset: 215;
-            animation: XwKMjlQL_draw 2000ms linear 346ms forwards;
-          }
-          .XwKMjlQL_10 {
-            stroke-dasharray: 150 152;
-            stroke-dashoffset: 151;
-            animation: XwKMjlQL_draw 2000ms linear 384ms forwards;
-          }
-          .XwKMjlQL_11 {
-            stroke-dasharray: 252 254;
-            stroke-dashoffset: 253;
-            animation: XwKMjlQL_draw 2000ms linear 423ms forwards;
-          }
-          .XwKMjlQL_12 {
-            stroke-dasharray: 181 183;
-            stroke-dashoffset: 182;
-            animation: XwKMjlQL_draw 2000ms linear 461ms forwards;
-          }
-          .XwKMjlQL_13 {
-            stroke-dasharray: 214 216;
-            stroke-dashoffset: 215;
-            animation: XwKMjlQL_draw 2000ms linear 500ms forwards;
-          }
-          .XwKMjlQL_14 {
-            stroke-dasharray: 41 43;
-            stroke-dashoffset: 42;
-            animation: XwKMjlQL_draw 2000ms linear 538ms forwards;
-          }
-          .XwKMjlQL_15 {
-            stroke-dasharray: 39 41;
-            stroke-dashoffset: 40;
-            animation: XwKMjlQL_draw 2000ms linear 576ms forwards;
-          }
-          .XwKMjlQL_16 {
-            stroke-dasharray: 159 161;
-            stroke-dashoffset: 160;
-            animation: XwKMjlQL_draw 2000ms linear 615ms forwards;
-          }
-          .XwKMjlQL_17 {
-            stroke-dasharray: 82 84;
-            stroke-dashoffset: 83;
-            animation: XwKMjlQL_draw 2000ms linear 653ms forwards;
-          }
-          .XwKMjlQL_18 {
-            stroke-dasharray: 10 12;
-            stroke-dashoffset: 11;
-            animation: XwKMjlQL_draw 2000ms linear 692ms forwards;
-          }
-          .XwKMjlQL_19 {
-            stroke-dasharray: 190 192;
-            stroke-dashoffset: 191;
-            animation: XwKMjlQL_draw 2000ms linear 730ms forwards;
-          }
-          .XwKMjlQL_20 {
-            stroke-dasharray: 184 186;
-            stroke-dashoffset: 185;
-            animation: XwKMjlQL_draw 2000ms linear 769ms forwards;
-          }
-          .XwKMjlQL_21 {
-            stroke-dasharray: 43 45;
-            stroke-dashoffset: 44;
-            animation: XwKMjlQL_draw 2000ms linear 807ms forwards;
-          }
-          .XwKMjlQL_22 {
-            stroke-dasharray: 182 184;
-            stroke-dashoffset: 183;
-            animation: XwKMjlQL_draw 2000ms linear 846ms forwards;
-          }
-          .XwKMjlQL_23 {
-            stroke-dasharray: 150 152;
-            stroke-dashoffset: 151;
-            animation: XwKMjlQL_draw 2000ms linear 884ms forwards;
-          }
-          .XwKMjlQL_24 {
-            stroke-dasharray: 28 30;
-            stroke-dashoffset: 29;
-            animation: XwKMjlQL_draw 2000ms linear 923ms forwards;
-          }
-          .XwKMjlQL_25 {
-            stroke-dasharray: 149 151;
-            stroke-dashoffset: 150;
-            animation: XwKMjlQL_draw 2000ms linear 961ms forwards;
-          }
-          .XwKMjlQL_26 {
-            stroke-dasharray: 107 109;
-            stroke-dashoffset: 108;
-            animation: XwKMjlQL_draw 2000ms linear 1000ms forwards;
-          }
-          @keyframes XwKMjlQL_draw {
-            100% {
-              stroke-dashoffset: 0;
-            }
-          }
-          @keyframes XwKMjlQL_fade {
-            0% {
-              stroke-opacity: 1;
-            }
-            94.44444444444444% {
-              stroke-opacity: 1;
-            }
-            100% {
-              stroke-opacity: 0;
-            }
-          }
-        </style>
+        ...SVG animation styles omitted for brevity...
       </svg>
     </section>
     <section class="info">
@@ -455,5 +1130,9 @@
         <a class="li" href="https://www.linkedin.com/in/adamtyler96"><i class="fa fa-2x fa-linkedin-square"></i></a>
       </div>
     </section>
+  </body>
+
+  ============================================================
+-->
   </body>
 </html>
