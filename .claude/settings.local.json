@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/adamtyler/repos/AdamTyler.github.io/.claude/worktrees/nice-pare diff)",
+      "Bash(git -C /Users/adamtyler/repos/AdamTyler.github.io/.claude/worktrees/nice-pare log --oneline -5)",
+      "Bash(git -C /Users/adamtyler/repos/AdamTyler.github.io/.claude/worktrees/nice-pare add index.html)",
+      "Bash(git -C:*)",
+      "Bash(gh pr:*)"
+    ]
+  }
+}
