@@ -40,7 +40,7 @@
       body {
         background: var(--bg);
         color: var(--white);
-        font-family: "Barlow", sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: 300;
         min-height: 100vh;
         overflow-x: hidden;
@@ -48,7 +48,7 @@
 
       /* ── noise grain overlay ── */
       body::before {
-        content: "";
+        content: '';
         position: fixed;
         inset: 0;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
@@ -59,7 +59,7 @@
 
       /* ── subtle radial glow ── */
       body::after {
-        content: "";
+        content: '';
         position: fixed;
         top: -20vh;
         left: 50%;
@@ -148,7 +148,7 @@
       }
 
       .name {
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: 'Barlow Condensed', sans-serif;
         font-weight: 900;
         font-size: clamp(52px, 14vw, 80px);
         letter-spacing: 0.04em;
@@ -169,7 +169,7 @@
       }
 
       .role-badge {
-        font-family: "DM Mono", monospace;
+        font-family: 'DM Mono', monospace;
         font-size: 11px;
         font-weight: 400;
         letter-spacing: 0.12em;
@@ -222,7 +222,7 @@
       }
 
       .section-label {
-        font-family: "DM Mono", monospace;
+        font-family: 'DM Mono', monospace;
         font-size: 10px;
         font-weight: 400;
         letter-spacing: 0.18em;
@@ -262,7 +262,7 @@
       }
 
       .card::before {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         top: 0;
@@ -302,7 +302,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: 'Barlow Condensed', sans-serif;
         font-weight: 700;
         font-size: 14px;
         color: var(--muted);
@@ -315,7 +315,7 @@
       }
 
       .card-name {
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: 'Barlow Condensed', sans-serif;
         font-weight: 600;
         font-size: 16px;
         letter-spacing: 0.04em;
@@ -363,7 +363,7 @@
         border-radius: 8px;
         text-decoration: none;
         color: var(--muted);
-        font-family: "DM Mono", monospace;
+        font-family: 'DM Mono', monospace;
         font-size: 11px;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -390,7 +390,7 @@
       .footer {
         margin-top: 64px;
         text-align: center;
-        font-family: "DM Mono", monospace;
+        font-family: 'DM Mono', monospace;
         font-size: 10px;
         color: var(--dim);
         letter-spacing: 0.1em;
@@ -965,22 +965,22 @@
 
           <a
             class="card"
-            href="https://www.regentops.com/"
+            href="https://www.trytheturn.com/"
             target="_blank"
             rel="noopener"
           >
             <img
               class="card-icon"
-              src="./assets/regent.png"
-              alt="Regent"
+              src="./assets/theturn.png"
+              alt="TheTurn"
               onerror="
                 this.style.display = 'none';
                 this.nextElementSibling.style.display = 'flex';
               "
             />
-            <div class="card-icon-placeholder" style="display: none">RO</div>
+            <div class="card-icon-placeholder" style="display: none">TT</div>
             <div class="card-info">
-              <div class="card-name">Regent</div>
+              <div class="card-name">The Turn</div>
               <div class="card-desc">Golf beverage ordering services</div>
             </div>
             <span class="card-arrow">→</span>
