@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adam Tyler</title>
+    <title>Adam Tyler · Digital Craftsman</title>
+    <meta
+      name="description"
+      content="Adam Tyler — engineer, girl dad, woodworker, and gamer. Principal Engineer building polished web apps, products, and things made by hand."
+    />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -446,6 +450,40 @@
         }
       }
 
+      /* ── respect reduced motion ── */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-delay: 0ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+        /* ensure elements that start at opacity:0 are visible without animation */
+        .portrait-wrap,
+        .name,
+        .tagline-row,
+        .bio,
+        .section,
+        .footer {
+          opacity: 1 !important;
+        }
+        /* draw SVG strokes fully without the animated reveal */
+        .portrait-ring path,
+        .portrait-badge svg path {
+          stroke-dashoffset: 0 !important;
+        }
+        .portrait-badge {
+          border-color: rgba(59, 158, 221, 0.45) !important;
+          box-shadow:
+            0 0 14px rgba(59, 158, 221, 0.2),
+            0 0 0 3px rgba(232, 160, 32, 0.08),
+            0 4px 12px rgba(0, 0, 0, 0.5) !important;
+        }
+      }
+
       /* ── mobile tweaks ── */
       @media (max-width: 400px) {
         .wrapper {
@@ -517,7 +555,10 @@
               style="animation: ringDraw 800ms linear 800ms forwards"
             />
           </svg>
-          <img class="portrait" src="./assets/portrait.png" alt="Adam Tyler" />
+          <picture>
+            <source srcset="./assets/portrait.webp" type="image/webp" />
+            <img class="portrait" src="./assets/portrait.png" alt="Adam Tyler" />
+          </picture>
           <!-- AT logo badge -->
           <div class="portrait-badge">
             <svg
