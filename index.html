@@ -536,6 +536,14 @@
       }
 
       /* skeleton shown until the component mounts */
+      /* colour-swatch overrides (beat the component's inline face/dot colours) */
+      .dice-stage.is-blue .face {
+        background: #3b9edd !important;
+      }
+      .dice-stage.is-blue .dot {
+        background: #f0f4f8 !important;
+      }
+
       .dice-stage[data-state='loading']::after {
         content: 'Loading dice…';
         font-family: 'DM Mono', monospace;
@@ -587,12 +595,41 @@
         box-shadow: none;
       }
 
+      .dice-swatches {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .dice-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 0;
+        cursor: pointer;
+        box-shadow: 0 0 0 0 transparent;
+        transition:
+          box-shadow 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .dice-swatch:hover {
+        transform: scale(1.12);
+      }
+
+      .dice-swatch.is-active {
+        box-shadow:
+          0 0 0 2px var(--bg),
+          0 0 0 3.5px rgba(240, 244, 248, 0.7);
+      }
+
       .dice-readout {
         font-family: 'DM Mono', monospace;
         font-size: 12px;
         letter-spacing: 0.04em;
         color: var(--muted);
-        min-width: 0;
+        text-align: center;
       }
 
       .dice-readout b {
@@ -1141,35 +1178,6 @@
         </div>
       </section>
 
-      <!-- LIVE DEMO -->
-      <section class="section">
-        <div class="section-header">
-          <span class="section-label">Try It Live</span>
-          <div class="section-line"></div>
-        </div>
-        <div class="dice-panel">
-          <div class="dice-stage" id="dice-stage" data-state="loading"></div>
-          <div class="dice-controls">
-            <button class="dice-roll-btn" id="dice-roll" disabled>
-              Roll the dice
-            </button>
-            <span class="dice-readout" id="dice-readout"
-              >or click a die to roll it</span
-            >
-          </div>
-          <p class="dice-caption">
-            Live demo of
-            <a
-              href="https://www.npmjs.com/package/react-dice-complete"
-              target="_blank"
-              rel="noopener"
-              >react-dice-complete</a
-            >
-            — my open-source React dice component.
-          </p>
-        </div>
-      </section>
-
       <!-- PERSONAL -->
       <section class="section">
         <div class="section-header">
@@ -1222,31 +1230,62 @@
             </div>
             <span class="card-arrow">→</span>
           </a>
+        </div>
+      </section>
 
-          <a
-            class="card"
-            href="https://www.adam-tyler.com/react-dice-complete/"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              class="card-icon"
-              src="./assets/rd.png"
-              alt="React Dice"
-              onerror="
-                this.style.display = 'none';
-                this.nextElementSibling.style.display = 'flex';
-              "
-            />
-            <div class="card-icon-placeholder" style="display: none">RD</div>
-            <div class="card-info">
-              <div class="card-name">React Dice</div>
-              <div class="card-desc">
-                Open-source dice roller component for React
-              </div>
+      <!-- LIVE DEMO -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Try It Live</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="dice-panel">
+          <div class="dice-stage" id="dice-stage" data-state="loading"></div>
+          <div class="dice-controls">
+            <button class="dice-roll-btn" id="dice-roll" disabled>
+              Roll the dice
+            </button>
+            <div
+              class="dice-swatches"
+              id="dice-swatches"
+              role="group"
+              aria-label="Dice color"
+            >
+              <button
+                class="dice-swatch is-active"
+                data-palette="gold"
+                style="background: #e8a020"
+                aria-label="Gold dice"
+                title="Gold"
+              ></button>
+              <button
+                class="dice-swatch"
+                data-palette="blue"
+                style="background: #3b9edd"
+                aria-label="Blue dice"
+                title="Blue"
+              ></button>
             </div>
-            <span class="card-arrow">→</span>
-          </a>
+          </div>
+          <span class="dice-readout" id="dice-readout"
+            >Roll, or click a die to roll it</span
+          >
+          <p class="dice-caption">
+            Live demo of
+            <a
+              href="https://www.npmjs.com/package/react-dice-complete"
+              target="_blank"
+              rel="noopener"
+              >react-dice-complete</a
+            >
+            — my open-source React dice component ·
+            <a
+              href="https://github.com/AdamTyler/react-dice-complete"
+              target="_blank"
+              rel="noopener"
+              >Source</a
+            >
+          </p>
         </div>
       </section>
 
@@ -1367,13 +1406,16 @@
               'You rolled <b>' + total + '</b> (' + values.join(' + ') + ')';
           }
 
+          // Render once with the default (gold) palette. Colour switching is
+          // done with CSS overrides below — re-rendering with new colour props
+          // would rebuild the dice, re-rolling them and losing the values.
           stage.removeAttribute('data-state');
           RD.createRoot(stage).render(
             R.createElement(Dice, {
               ref: ref,
-              numDice: 2,
-              dieSize: 64,
-              margin: 14,
+              numDice: 3,
+              dieSize: 58,
+              margin: 12,
               dieCornerRadius: 8,
               faceColor: '#e8a020',
               dotColor: '#0d1117',
@@ -1388,6 +1430,23 @@
           rollBtn.addEventListener('click', function () {
             if (ref.current) ref.current.rollAll();
           });
+
+          // Colour swatches: recolour via a class on the stage (CSS overrides
+          // the component's inline face/dot colours) — values are untouched.
+          var swatches = document.getElementById('dice-swatches');
+          if (swatches) {
+            swatches.addEventListener('click', function (e) {
+              var btn = e.target.closest('.dice-swatch');
+              if (!btn) return;
+              stage.classList.toggle('is-blue', btn.dataset.palette === 'blue');
+              Array.prototype.forEach.call(
+                swatches.querySelectorAll('.dice-swatch'),
+                function (s) {
+                  s.classList.toggle('is-active', s === btn);
+                }
+              );
+            });
+          }
         }
 
         function start() {
