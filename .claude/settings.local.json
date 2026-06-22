@@ -8,7 +8,28 @@
       "Bash(gh pr:*)",
       "Bash(sips -g all favicon.png)",
       "Bash(python3 -c \"from PIL import Image; print\\('pillow available'\\)\")",
-      "Bash(python3 -c \"import cairosvg; print\\('cairosvg available'\\)\")"
+      "Bash(python3 -c \"import cairosvg; print\\('cairosvg available'\\)\")",
+      "Bash(sips -g pixelWidth -g pixelHeight assets/portrait.png)",
+      "Bash(cwebp -q 82 assets/portrait.png -o assets/portrait.webp)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(magick -list font)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(fc-list)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type} %{size_download} bytes\\\\n\" http://localhost:4173/assets/og-image.jpg)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(curl -sL https://www.adam-tyler.com/)",
+      "Bash(grep -iA1 'og:image\"\\\\|og:description\\\\|twitter:image\"')",
+      "Bash(curl -sL -o /dev/null -w \"status=%{http_code} type=%{content_type} size=%{size_download} final=%{url_effective}\\\\n\" https://www.adam-tyler.com/assets/og-image.jpg)",
+      "Bash(git stash *)",
+      "Bash(git commit -q -m ' *)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -sL https://www.adam-tyler.com/assets/og-image.jpg -o live-og.jpg)",
+      "Bash(magick identify *)",
+      "Bash(git mv *)"
     ]
   }
 }
