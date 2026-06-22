@@ -654,6 +654,46 @@
         border-bottom-color: var(--blue);
       }
 
+      /* ── expandable react dice card ── */
+      .card-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-expandable {
+        width: 100%;
+        font: inherit;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .card-chevron {
+        transition: transform 0.25s ease;
+      }
+
+      .card-expandable[aria-expanded='true'] .card-chevron {
+        transform: rotate(180deg);
+        color: var(--blue);
+      }
+
+      /* accordion reveal — max-height keeps it robust regardless of when
+         the dice mount (a grid 0fr/1fr trick can resolve to 0 if the
+         component mounts while the panel is collapsed) */
+      .dice-demo {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.32s ease;
+      }
+
+      .dice-demo.open {
+        max-height: 480px;
+      }
+
+      .dice-demo .dice-panel {
+        margin-top: 10px;
+      }
+
       /* ── respect reduced motion ── */
       @media (prefers-reduced-motion: reduce) {
         *,
@@ -1230,18 +1270,48 @@
             </div>
             <span class="card-arrow">→</span>
           </a>
-        </div>
-      </section>
 
-      <!-- LIVE DEMO -->
-      <section class="section">
-        <div class="section-header">
-          <span class="section-label">Try It Live</span>
-          <div class="section-line"></div>
-        </div>
-        <div class="dice-panel">
-          <div class="dice-stage" id="dice-stage" data-state="loading"></div>
-          <div class="dice-controls">
+          <!-- React Dice: expandable live demo -->
+          <div class="card-group">
+            <button
+              class="card card-expandable"
+              id="dice-card"
+              type="button"
+              aria-expanded="false"
+              aria-controls="dice-demo"
+            >
+              <img
+                class="card-icon"
+                src="./assets/rd.png"
+                alt="React Dice"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">RD</div>
+              <div class="card-info">
+                <div class="card-name">React Dice</div>
+                <div class="card-desc">
+                  Open-source dice roller for React · roll it
+                </div>
+              </div>
+              <span class="card-arrow card-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div
+              class="dice-demo"
+              id="dice-demo"
+              role="region"
+              aria-label="React Dice live demo"
+            >
+              <div class="dice-demo-inner">
+                <div class="dice-panel">
+                  <div
+                    class="dice-stage"
+                    id="dice-stage"
+                    data-state="loading"
+                  ></div>
+                  <div class="dice-controls">
             <button class="dice-roll-btn" id="dice-roll" disabled>
               Roll the dice
             </button>
@@ -1283,9 +1353,13 @@
               href="https://github.com/AdamTyler/react-dice-complete"
               target="_blank"
               rel="noopener"
-              >Source</a
-            >
-          </p>
+                      >Source</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1346,13 +1420,15 @@
       <footer class="footer">Built with <span>♥</span> · adam-tyler.com</footer>
     </div>
 
-    <!-- Live React Dice demo: loaded lazily, only when scrolled into view -->
+    <!-- Live React Dice demo: scripts load on first expand of the card -->
     <script>
       (function () {
         var stage = document.getElementById('dice-stage');
         var rollBtn = document.getElementById('dice-roll');
         var readout = document.getElementById('dice-readout');
-        if (!stage || !rollBtn) return;
+        var card = document.getElementById('dice-card');
+        var demo = document.getElementById('dice-demo');
+        if (!stage || !rollBtn || !card || !demo) return;
 
         var SCRIPTS = [
           'https://unpkg.com/react@18.3.1/umd/react.production.min.js',
@@ -1461,20 +1537,13 @@
             .catch(fail);
         }
 
-        if ('IntersectionObserver' in window) {
-          var io = new IntersectionObserver(
-            function (entries) {
-              if (entries.some(function (e) { return e.isIntersecting; })) {
-                io.disconnect();
-                start();
-              }
-            },
-            { rootMargin: '200px' }
-          );
-          io.observe(stage);
-        } else {
-          start();
-        }
+        // Expand/collapse the card; load + mount the dice on first open.
+        card.addEventListener('click', function () {
+          var open = card.getAttribute('aria-expanded') === 'true';
+          card.setAttribute('aria-expanded', String(!open));
+          demo.classList.toggle('open', !open);
+          if (!open) start();
+        });
       })();
     </script>
   </body>
