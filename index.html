@@ -672,6 +672,32 @@
         transition: transform 0.25s ease;
       }
 
+      /* gentle "tap me" hint — only while the card is collapsed */
+      @keyframes chevronHint {
+        0%,
+        55%,
+        100% {
+          transform: translateY(0);
+          color: var(--dim);
+        }
+        25% {
+          transform: translateY(3px);
+          color: var(--blue);
+        }
+      }
+
+      .card-expandable[aria-expanded='false'] .card-chevron {
+        animation: chevronHint 2.4s ease-in-out 1.2s infinite;
+      }
+
+      /* pause the hint once the user is engaging; nudge down to reinforce
+         that it opens downward */
+      .card-expandable[aria-expanded='false']:hover .card-chevron {
+        animation: none;
+        transform: translateY(2px);
+        color: var(--blue);
+      }
+
       .card-expandable[aria-expanded='true'] .card-chevron {
         transform: rotate(180deg);
         color: var(--blue);
