@@ -497,6 +497,126 @@
         }
       }
 
+      /* ── react dice demo ── */
+      .dice-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px 18px 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dice-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--blue),
+          var(--gold),
+          transparent
+        );
+        opacity: 0.5;
+      }
+
+      .dice-stage {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* skeleton shown until the component mounts */
+      .dice-stage[data-state='loading']::after {
+        content: 'Loading dice…';
+        font-family: 'DM Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+
+      .dice-controls {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .dice-roll-btn {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--gold);
+        border: none;
+        border-radius: 8px;
+        padding: 9px 22px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.2s ease,
+          opacity 0.2s ease;
+        box-shadow: 0 4px 14px rgba(232, 160, 32, 0.25);
+      }
+
+      .dice-roll-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(232, 160, 32, 0.35);
+      }
+
+      .dice-roll-btn:active {
+        transform: translateY(0);
+      }
+
+      .dice-roll-btn:disabled {
+        opacity: 0.5;
+        cursor: progress;
+        box-shadow: none;
+      }
+
+      .dice-readout {
+        font-family: 'DM Mono', monospace;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        min-width: 0;
+      }
+
+      .dice-readout b {
+        color: var(--gold);
+        font-weight: 400;
+      }
+
+      .dice-caption {
+        font-size: 12px;
+        color: var(--dim);
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .dice-caption a {
+        color: var(--blue);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(59, 158, 221, 0.3);
+      }
+
+      .dice-caption a:hover {
+        border-bottom-color: var(--blue);
+      }
+
       /* ── respect reduced motion ── */
       @media (prefers-reduced-motion: reduce) {
         *,
@@ -1021,6 +1141,35 @@
         </div>
       </section>
 
+      <!-- LIVE DEMO -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Try It Live</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="dice-panel">
+          <div class="dice-stage" id="dice-stage" data-state="loading"></div>
+          <div class="dice-controls">
+            <button class="dice-roll-btn" id="dice-roll" disabled>
+              Roll the dice
+            </button>
+            <span class="dice-readout" id="dice-readout"
+              >or click a die to roll it</span
+            >
+          </div>
+          <p class="dice-caption">
+            Live demo of
+            <a
+              href="https://www.npmjs.com/package/react-dice-complete"
+              target="_blank"
+              rel="noopener"
+              >react-dice-complete</a
+            >
+            — my open-source React dice component.
+          </p>
+        </div>
+      </section>
+
       <!-- PERSONAL -->
       <section class="section">
         <div class="section-header">
@@ -1157,5 +1306,117 @@
 
       <footer class="footer">Built with <span>♥</span> · adam-tyler.com</footer>
     </div>
+
+    <!-- Live React Dice demo: loaded lazily, only when scrolled into view -->
+    <script>
+      (function () {
+        var stage = document.getElementById('dice-stage');
+        var rollBtn = document.getElementById('dice-roll');
+        var readout = document.getElementById('dice-readout');
+        if (!stage || !rollBtn) return;
+
+        var SCRIPTS = [
+          'https://unpkg.com/react@18.3.1/umd/react.production.min.js',
+          'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js',
+          'https://unpkg.com/react-dice-complete@2.3.1/dist/react-dice-complete.js',
+        ];
+
+        var started = false;
+
+        function fail() {
+          // Graceful degradation: hide interactive bits, keep the caption/link.
+          stage.removeAttribute('data-state');
+          stage.style.display = 'none';
+          rollBtn.parentElement.style.display = 'none';
+        }
+
+        function loadScript(src) {
+          return new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+          });
+        }
+
+        function mount() {
+          var R = window.React,
+            RD = window.ReactDOM;
+          var Dice = window.ReactDice && (window.ReactDice.default || window.ReactDice);
+          if (!R || !RD || !RD.createRoot || typeof Dice === 'undefined') {
+            return fail();
+          }
+
+          var reduce =
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          var ref = R.createRef();
+          // The component fires rollDone once on mount with the default face;
+          // ignore that so the readout only reacts to real rolls.
+          var firstCall = true;
+
+          function rollDone(total, values) {
+            if (firstCall) {
+              firstCall = false;
+              return;
+            }
+            readout.innerHTML =
+              'You rolled <b>' + total + '</b> (' + values.join(' + ') + ')';
+          }
+
+          stage.removeAttribute('data-state');
+          RD.createRoot(stage).render(
+            R.createElement(Dice, {
+              ref: ref,
+              numDice: 2,
+              dieSize: 64,
+              margin: 14,
+              dieCornerRadius: 8,
+              faceColor: '#e8a020',
+              dotColor: '#0d1117',
+              outline: true,
+              outlineColor: '#0d1117',
+              rollTime: reduce ? 0.1 : 1.6,
+              rollDone: rollDone,
+            })
+          );
+
+          rollBtn.disabled = false;
+          rollBtn.addEventListener('click', function () {
+            if (ref.current) ref.current.rollAll();
+          });
+        }
+
+        function start() {
+          if (started) return;
+          started = true;
+          SCRIPTS.reduce(function (chain, src) {
+            return chain.then(function () {
+              return loadScript(src);
+            });
+          }, Promise.resolve())
+            .then(mount)
+            .catch(fail);
+        }
+
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              if (entries.some(function (e) { return e.isIntersecting; })) {
+                io.disconnect();
+                start();
+              }
+            },
+            { rootMargin: '200px' }
+          );
+          io.observe(stage);
+        } else {
+          start();
+        }
+      })();
+    </script>
   </body>
 </html>
