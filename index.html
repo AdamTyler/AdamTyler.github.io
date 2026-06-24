@@ -766,6 +766,27 @@
     </style>
   </head>
   <body>
+    <!--
+
+               ██████████ ████████████████
+              ███████████ ████████████████
+             ████████████ ████████████████
+            █████████████ ███████
+          ███████ ███████ ███████
+         ███████  ███████ ███████
+        ███████   ███████ ███████
+       ██████     ███████ ███████
+      ██████      ███████ ███████
+    ███████       ███████ ███████
+
+       measure twice, ship once.
+
+       You're reading the source — I like your style.
+       Open the console and type  roll()  to roll the dice. 🎲
+
+       — Adam Tyler · https://github.com/AdamTyler
+
+    -->
     <div class="wrapper">
       <!-- HERO -->
       <header class="hero">
@@ -1570,6 +1591,50 @@
           demo.classList.toggle('open', !open);
           if (!open) start();
         });
+      })();
+    </script>
+
+    <!-- console easter egg -->
+    <script>
+      (function () {
+        var gold = 'color:#e8a020',
+          dim = 'color:#8b98a8';
+        var banner =
+          'font:700 26px "Barlow Condensed",system-ui,sans-serif;' +
+          'color:#e8a020;letter-spacing:0.04em';
+
+        console.log('%cADAM TYLER', banner);
+        console.log('%cDigital Craftsman · hand-built, no framework.', dim);
+        console.log(
+          '%cYou found the source. Type %croll()%c to roll the dice. 🎲',
+          dim,
+          gold + ';font-weight:700',
+          dim
+        );
+
+        var faces = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+        window.roll = function (n) {
+          n = Math.max(1, Math.min(6, n || 2));
+          var values = [],
+            total = 0;
+          for (var i = 0; i < n; i++) {
+            var v = 1 + Math.floor(Math.random() * 6);
+            values.push(v);
+            total += v;
+          }
+          console.log(
+            '%c' +
+              values
+                .map(function (v) {
+                  return faces[v];
+                })
+                .join(' ') +
+              '   = ' +
+              total,
+            'font-size:28px;' + gold
+          );
+          return total;
+        };
       })();
     </script>
   </body>
