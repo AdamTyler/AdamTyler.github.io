@@ -453,6 +453,10 @@
         color: var(--gold);
       }
 
+      .footer-copyright {
+        margin-top: 8px;
+      }
+
       /* ── ring / badge border draw-in ── */
       @keyframes ringDraw {
         to {
@@ -1465,7 +1469,10 @@
         </div>
       </section>
 
-      <footer class="footer">Built with <span>♥</span> · adam-tyler.com</footer>
+      <footer class="footer">
+        Built with <span>♥</span> · adam-tyler.com
+        <div class="footer-copyright">© <span id="copyright-year">2026</span> AT Foundry LLC. All rights reserved.</div>
+      </footer>
     </div>
 
     <!-- Live React Dice demo: scripts load on first expand of the card -->
@@ -1636,6 +1643,9 @@
           );
           return total;
         };
+
+        document.getElementById('copyright-year').textContent =
+          new Date().getFullYear();
       })();
     </script>
   </body>
