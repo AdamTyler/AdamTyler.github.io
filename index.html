@@ -1485,7 +1485,16 @@
 
           <div class="card project-card">
             <div class="card-main">
-              <div class="card-icon-placeholder">SS</div>
+              <img
+                class="card-icon"
+                src="./assets/stellarseasons.png"
+                alt="Stellar Seasons"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">SS</div>
               <div class="card-info">
                 <div class="card-name-row">
                   <div class="card-name">Stellar Seasons</div>
