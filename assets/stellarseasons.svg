@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Placeholder favicon: crescent moon + star on warm ivory.
+       Swap this file (or add app/apple-icon.png) when final brand assets exist. -->
+  <rect width="64" height="64" rx="14" fill="#f6f1e7"/>
+  <path d="M39 14a18 18 0 1 0 8 34 20 20 0 0 1-8-34z" fill="#26362c"/>
+  <path d="M22 20l1.7 4.3L28 26l-4.3 1.7L22 32l-1.7-4.3L16 26l4.3-1.7z" fill="#b3915c"/>
+  <circle cx="27" cy="42" r="1.6" fill="#b3915c"/>
+</svg>
