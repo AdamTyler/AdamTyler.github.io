@@ -397,9 +397,120 @@
         transform: translateX(2px);
       }
 
+      /* ── project cards ──
+         A product can live in more than one place (site, App Store, Play), so
+         these cards are containers with their own links rather than one big
+         anchor — an anchor cannot be nested inside another anchor. */
+      .project-card {
+        flex-wrap: wrap;
+        row-gap: 12px;
+      }
+
+      /* Nothing to travel to: the card itself is no longer clickable. */
+      .project-card:hover {
+        transform: none;
+      }
+
+      .card-main {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1 1 240px;
+        min-width: 0;
+      }
+
+      .card-name-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 3px;
+      }
+
+      .card-name-row .card-name {
+        margin-bottom: 0;
+      }
+
+      .card-status {
+        font-family: 'DM Mono', monospace;
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .card-status.is-live {
+        color: var(--blue);
+        border-color: rgba(59, 158, 221, 0.35);
+        background: rgba(59, 158, 221, 0.1);
+      }
+
+      .card-status.is-review {
+        color: var(--gold);
+        border-color: rgba(232, 160, 32, 0.35);
+        background: rgba(232, 160, 32, 0.1);
+      }
+
+      /* Rides on the right of the card, so one lone pill costs no extra height.
+         Wraps to its own row below once the pills stop fitting. */
+      .card-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-left: auto;
+      }
+
+      /* Wrapped: 42px icon + 16px gap lines the pills up with the text column. */
+      @media (max-width: 560px) {
+        .card-links {
+          flex-basis: 100%;
+          margin-left: 58px;
+        }
+      }
+
+      .card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--muted);
+        font-family: 'DM Mono', monospace;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+      }
+
+      .card-link:hover {
+        color: var(--white);
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .card-link svg {
+        width: 12px;
+        height: 12px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+
       /* ── social ── */
       .socials {
         display: flex;
+        flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
       }
@@ -408,7 +519,9 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 20px;
+        /* 16px, not 20: four buttons then fit the 540px column on one row,
+           instead of leaving Email orphaned on a second. */
+        padding: 10px 16px;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 8px;
@@ -428,6 +541,18 @@
         color: var(--white);
         border-color: rgba(255, 255, 255, 0.2);
         background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Below ~509px the four buttons stop sharing a row, and a free wrap
+         strands the last one alone. Pin an even 2x2 instead. */
+      @media (max-width: 520px) {
+        .socials {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .social-btn {
+          justify-content: center;
+        }
       }
 
       .social-btn svg {
@@ -766,6 +891,9 @@
         }
         .social-btn {
           padding: 10px 14px;
+        }
+        .card-links {
+          margin-left: 0;
         }
       }
     </style>
@@ -1186,10 +1314,340 @@
         </p>
       </header>
 
-      <!-- PROFESSIONAL -->
+      <!-- BUILDING -->
       <section class="section">
         <div class="section-header">
-          <span class="section-label">Professional</span>
+          <span class="section-label">Building</span>
+          <div class="section-line"></div>
+        </div>
+        <div class="cards">
+          <div class="card project-card">
+            <div class="card-main">
+              <img
+                class="card-icon"
+                src="./assets/drawlur.png"
+                alt="Drawlur"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">DW</div>
+              <div class="card-info">
+                <div class="card-name-row">
+                  <div class="card-name">Drawlur</div>
+                  <span class="card-status is-live">Live</span>
+                </div>
+                <div class="card-desc">Social drawing app</div>
+              </div>
+            </div>
+            <div class="card-links">
+              <a
+                class="card-link"
+                href="https://drawlur.com/"
+                target="_blank"
+                rel="noopener"
+                >Site</a
+              >
+              <a
+                class="card-link"
+                href="https://apps.apple.com/us/app/drawlur/id6759679028"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
+                  />
+                </svg>
+                App Store
+              </a>
+              <a
+                class="card-link"
+                href="https://play.google.com/store/apps/details?id=com.adamtyler.drawlur"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 01-.61-.92V2.734a.996.996 0 01.61-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1.001 1.001 0 010 1.73l-2.808 1.626L15.117 12l2.581-2.491zM5.864 2.658L16.8 8.99l-2.303 2.303-8.633-8.635z"
+                  />
+                </svg>
+                Google Play
+              </a>
+            </div>
+          </div>
+
+          <div class="card project-card">
+            <div class="card-main">
+              <img
+                class="card-icon"
+                src="./assets/theturn.png"
+                alt="TheTurn"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">TT</div>
+              <div class="card-info">
+                <div class="card-name-row">
+                  <div class="card-name">The Turn</div>
+                  <span class="card-status is-live">Live</span>
+                </div>
+                <div class="card-desc">Golf beverage ordering services</div>
+              </div>
+            </div>
+            <div class="card-links">
+              <a
+                class="card-link"
+                href="https://www.trytheturn.com/"
+                target="_blank"
+                rel="noopener"
+                >Site</a
+              >
+              <a
+                class="card-link"
+                href="https://apps.apple.com/app/the-turn-delivery/id6773472735"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
+                  />
+                </svg>
+                App Store
+              </a>
+              <a
+                class="card-link"
+                href="https://play.google.com/store/apps/details?id=com.trytheturn.golfer"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 01-.61-.92V2.734a.996.996 0 01.61-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1.001 1.001 0 010 1.73l-2.808 1.626L15.117 12l2.581-2.491zM5.864 2.658L16.8 8.99l-2.303 2.303-8.633-8.635z"
+                  />
+                </svg>
+                Google Play
+              </a>
+            </div>
+          </div>
+
+          <div class="card project-card">
+            <div class="card-main">
+              <img
+                class="card-icon"
+                src="./assets/linegoblin.png"
+                alt="LineGoblin"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">LG</div>
+              <div class="card-info">
+                <div class="card-name-row">
+                  <div class="card-name">LineGoblin</div>
+                  <span class="card-status is-live">Live</span>
+                </div>
+                <div class="card-desc">
+                  Put a line on anything · social pick cards
+                </div>
+              </div>
+            </div>
+            <div class="card-links">
+              <a
+                class="card-link"
+                href="https://linegoblin.com/"
+                target="_blank"
+                rel="noopener"
+                >Site</a
+              >
+              <a
+                class="card-link"
+                href="https://apps.apple.com/app/linegoblin/id6809225481"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
+                  />
+                </svg>
+                App Store
+              </a>
+              <a
+                class="card-link"
+                href="https://play.google.com/store/apps/details?id=com.atfoundry.linegoblin"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 01-.61-.92V2.734a.996.996 0 01.61-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1.001 1.001 0 010 1.73l-2.808 1.626L15.117 12l2.581-2.491zM5.864 2.658L16.8 8.99l-2.303 2.303-8.633-8.635z"
+                  />
+                </svg>
+                Google Play
+              </a>
+            </div>
+          </div>
+
+          <div class="card project-card">
+            <div class="card-main">
+              <img
+                class="card-icon"
+                src="./assets/stellarseasons.svg"
+                alt="Stellar Seasons"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">SS</div>
+              <div class="card-info">
+                <div class="card-name-row">
+                  <div class="card-name">Stellar Seasons</div>
+                  <span class="card-status">Coming soon</span>
+                </div>
+                <div class="card-desc">Modular seasonal door décor</div>
+              </div>
+            </div>
+            <div class="card-links">
+              <a
+                class="card-link"
+                href="https://stellarseasons.com/"
+                target="_blank"
+                rel="noopener"
+                >Site</a
+              >
+            </div>
+          </div>
+
+          <!-- React Dice: expandable live demo -->
+          <div class="card-group">
+            <button
+              class="card card-expandable"
+              id="dice-card"
+              type="button"
+              aria-expanded="false"
+              aria-controls="dice-demo"
+            >
+              <img
+                class="card-icon"
+                src="./assets/rd.png"
+                alt="React Dice"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.style.display = 'flex';
+                "
+              />
+              <div class="card-icon-placeholder" style="display: none">RD</div>
+              <div class="card-info">
+                <div class="card-name-row">
+                  <div class="card-name">React Dice</div>
+                  <span class="card-status">Open source</span>
+                </div>
+                <div class="card-desc">
+                  Open-source dice roller for React · roll it
+                </div>
+              </div>
+              <span class="card-arrow card-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div
+              class="dice-demo"
+              id="dice-demo"
+              role="region"
+              aria-label="React Dice live demo"
+            >
+              <div class="dice-demo-inner">
+                <div class="dice-panel">
+                  <div
+                    class="dice-stage"
+                    id="dice-stage"
+                    data-state="loading"
+                  ></div>
+                  <div class="dice-controls">
+            <button class="dice-roll-btn" id="dice-roll" disabled>
+              Roll the dice
+            </button>
+            <div
+              class="dice-swatches"
+              id="dice-swatches"
+              role="group"
+              aria-label="Dice color"
+            >
+              <button
+                class="dice-swatch is-active"
+                data-palette="gold"
+                style="background: #e8a020"
+                aria-label="Gold dice"
+                title="Gold"
+              ></button>
+              <button
+                class="dice-swatch"
+                data-palette="blue"
+                style="background: #3b9edd"
+                aria-label="Blue dice"
+                title="Blue"
+              ></button>
+            </div>
+          </div>
+          <span class="dice-readout" id="dice-readout"
+            >Roll, or click a die to roll it</span
+          >
+          <p class="dice-caption">
+            Mini demo of
+            <a
+              href="https://www.adam-tyler.com/react-dice-complete/"
+              target="_blank"
+              rel="noopener"
+              >react-dice-complete</a
+            >
+            — my open-source React dice component ·
+            <a
+              href="https://github.com/AdamTyler/react-dice-complete"
+              target="_blank"
+              rel="noopener"
+                      >Source</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-label">Experience</span>
           <div class="section-line"></div>
         </div>
         <div class="cards">
@@ -1270,151 +1728,6 @@
         </div>
       </section>
 
-      <!-- PERSONAL -->
-      <section class="section">
-        <div class="section-header">
-          <span class="section-label">Personal Projects</span>
-          <div class="section-line"></div>
-        </div>
-        <div class="cards">
-          <a
-            class="card"
-            href="https://drawlur.com/"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              class="card-icon"
-              src="./assets/drawlur.png"
-              alt="Drawlur"
-              onerror="
-                this.style.display = 'none';
-                this.nextElementSibling.style.display = 'flex';
-              "
-            />
-            <div class="card-icon-placeholder" style="display: none">DW</div>
-            <div class="card-info">
-              <div class="card-name">Drawlur</div>
-              <div class="card-desc">Social drawing app</div>
-            </div>
-            <span class="card-arrow">→</span>
-          </a>
-
-          <a
-            class="card"
-            href="https://www.trytheturn.com/"
-            target="_blank"
-            rel="noopener"
-          >
-            <img
-              class="card-icon"
-              src="./assets/theturn.png"
-              alt="TheTurn"
-              onerror="
-                this.style.display = 'none';
-                this.nextElementSibling.style.display = 'flex';
-              "
-            />
-            <div class="card-icon-placeholder" style="display: none">TT</div>
-            <div class="card-info">
-              <div class="card-name">The Turn</div>
-              <div class="card-desc">Golf beverage ordering services</div>
-            </div>
-            <span class="card-arrow">→</span>
-          </a>
-
-          <!-- React Dice: expandable live demo -->
-          <div class="card-group">
-            <button
-              class="card card-expandable"
-              id="dice-card"
-              type="button"
-              aria-expanded="false"
-              aria-controls="dice-demo"
-            >
-              <img
-                class="card-icon"
-                src="./assets/rd.png"
-                alt="React Dice"
-                onerror="
-                  this.style.display = 'none';
-                  this.nextElementSibling.style.display = 'flex';
-                "
-              />
-              <div class="card-icon-placeholder" style="display: none">RD</div>
-              <div class="card-info">
-                <div class="card-name">React Dice</div>
-                <div class="card-desc">
-                  Open-source dice roller for React · roll it
-                </div>
-              </div>
-              <span class="card-arrow card-chevron" aria-hidden="true">▾</span>
-            </button>
-            <div
-              class="dice-demo"
-              id="dice-demo"
-              role="region"
-              aria-label="React Dice live demo"
-            >
-              <div class="dice-demo-inner">
-                <div class="dice-panel">
-                  <div
-                    class="dice-stage"
-                    id="dice-stage"
-                    data-state="loading"
-                  ></div>
-                  <div class="dice-controls">
-            <button class="dice-roll-btn" id="dice-roll" disabled>
-              Roll the dice
-            </button>
-            <div
-              class="dice-swatches"
-              id="dice-swatches"
-              role="group"
-              aria-label="Dice color"
-            >
-              <button
-                class="dice-swatch is-active"
-                data-palette="gold"
-                style="background: #e8a020"
-                aria-label="Gold dice"
-                title="Gold"
-              ></button>
-              <button
-                class="dice-swatch"
-                data-palette="blue"
-                style="background: #3b9edd"
-                aria-label="Blue dice"
-                title="Blue"
-              ></button>
-            </div>
-          </div>
-          <span class="dice-readout" id="dice-readout"
-            >Roll, or click a die to roll it</span
-          >
-          <p class="dice-caption">
-            Mini demo of
-            <a
-              href="https://www.adam-tyler.com/react-dice-complete/"
-              target="_blank"
-              rel="noopener"
-              >react-dice-complete</a
-            >
-            — my open-source React dice component ·
-            <a
-              href="https://github.com/AdamTyler/react-dice-complete"
-              target="_blank"
-              rel="noopener"
-                      >Source</a
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- SOCIAL -->
       <section class="section">
         <div class="section-header">
@@ -1465,6 +1778,25 @@
               />
             </svg>
             LinkedIn
+          </a>
+
+          <!--
+            A forwarding alias, not the real mailbox — if it ever gets
+            harvested, repoint the forward and publish a new one. Deliberately
+            not obfuscated: scrapers decode entities and run JS, so the trick
+            only costs real people a working mailto.
+          -->
+          <a
+            class="social-btn"
+            href="mailto:hello@adam-tyler.com"
+            title="Email"
+          >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+            Email
           </a>
         </div>
       </section>
