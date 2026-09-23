@@ -510,6 +510,7 @@
       /* ── social ── */
       .socials {
         display: flex;
+        flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
       }
@@ -518,7 +519,9 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 20px;
+        /* 16px, not 20: four buttons then fit the 540px column on one row,
+           instead of leaving Email orphaned on a second. */
+        padding: 10px 16px;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 8px;
@@ -538,6 +541,18 @@
         color: var(--white);
         border-color: rgba(255, 255, 255, 0.2);
         background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Below ~509px the four buttons stop sharing a row, and a free wrap
+         strands the last one alone. Pin an even 2x2 instead. */
+      @media (max-width: 520px) {
+        .socials {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .social-btn {
+          justify-content: center;
+        }
       }
 
       .social-btn svg {
@@ -1763,6 +1778,25 @@
               />
             </svg>
             LinkedIn
+          </a>
+
+          <!--
+            A forwarding alias, not the real mailbox — if it ever gets
+            harvested, repoint the forward and publish a new one. Deliberately
+            not obfuscated: scrapers decode entities and run JS, so the trick
+            only costs real people a working mailto.
+          -->
+          <a
+            class="social-btn"
+            href="mailto:hello@adam-tyler.com"
+            title="Email"
+          >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+            Email
           </a>
         </div>
       </section>
