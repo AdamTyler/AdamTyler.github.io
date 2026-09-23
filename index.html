@@ -457,20 +457,24 @@
         background: rgba(232, 160, 32, 0.1);
       }
 
-      /* Rides on the right of the card, so one lone pill costs no extra height.
-         Wraps to its own row below once the pills stop fitting. */
+      /* Always its own row beneath the description, never inline beside it, so
+         a card with one link stands the same height as one with three. The
+         58px indent is the 42px icon plus the 16px gap, lining the pills up
+         with the text column above them. */
       .card-links {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-left: auto;
+        flex-basis: 100%;
+        margin-left: 58px;
       }
 
-      /* Wrapped: 42px icon + 16px gap lines the pills up with the text column. */
-      @media (max-width: 560px) {
+      /* Below this the indent costs a three-pill row the width it needs and
+         wraps it to two lines, making those cards taller than the one-link
+         card. The pills give up the alignment rather than the even height. */
+      @media (max-width: 480px) {
         .card-links {
-          flex-basis: 100%;
-          margin-left: 58px;
+          margin-left: 0;
         }
       }
 
@@ -892,8 +896,16 @@
         .social-btn {
           padding: 10px 14px;
         }
-        .card-links {
-          margin-left: 0;
+        /* "Stellar Seasons" + "Coming soon" overruns the text column by a few
+           pixels here and wraps to a second line, making that one card taller
+           than its neighbours. Tightening the chip buys back the difference. */
+        .card-name-row {
+          gap: 6px;
+        }
+        .card-status {
+          padding: 2px 6px;
+          font-size: 8.5px;
+          letter-spacing: 0.08em;
         }
       }
     </style>
